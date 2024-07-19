@@ -7,11 +7,32 @@ from django.utils import timezone
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
+        Category.objects.all().delete()
         category_list = [
-            {'name': 'Компьютеры и ноутбуки', 'created_at': timezone.now(), 'updated_at': timezone.now(), 'description': 'Описание для категории: компьютеры и ноутбуки',},
-            {'name': 'Планшеты и мониторы', 'created_at': timezone.now(), 'updated_at': timezone.now(), 'description': 'Описание для категории: планшеты и электронные книги',},
-            {'name': 'Смартфоны', 'created_at': timezone.now(), 'updated_at': timezone.now(), 'description': 'Описание категории: смартфоны',},
-            {'name': 'Гарнитура', 'created_at': timezone.now(), 'updated_at': timezone.now(), 'description': 'Описание для категории: гарнитура',},
+            {
+                "name": "Компьютеры и ноутбуки",
+                "created_at": timezone.now(),
+                "updated_at": timezone.now(),
+                "description": "Описание для категории: компьютеры и ноутбуки",
+            },
+            {
+                "name": "Планшеты и мониторы",
+                "created_at": timezone.now(),
+                "updated_at": timezone.now(),
+                "description": "Описание для категории: планшеты и электронные книги",
+            },
+            {
+                "name": "Смартфоны",
+                "created_at": timezone.now(),
+                "updated_at": timezone.now(),
+                "description": "Описание категории: смартфоны",
+            },
+            {
+                "name": "Гарнитура",
+                "created_at": timezone.now(),
+                "updated_at": timezone.now(),
+                "description": "Описание для категории: гарнитура",
+            },
         ]
 
         category_for_create = []
