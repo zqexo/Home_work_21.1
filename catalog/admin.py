@@ -1,9 +1,13 @@
 from django.contrib import admin
-from catalog.models import Student
+from catalog.models import Product, Category
 
 
-@admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "is_active")
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "description", "is_active")
     list_filter = ("is_active",)
-    search_fields = ("first_name", "last_name")
+    search_fields = ("name",)
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
