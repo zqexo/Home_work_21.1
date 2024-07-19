@@ -28,7 +28,6 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения записи')
 
     is_active = models.BooleanField(default=True, verbose_name="В наличии")
-    manufactured_at = models.DateTimeField(null=True, blank=True)  #Поле для удаления
 
     def __str__(self):
         return f"{self.name}"
