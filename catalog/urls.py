@@ -6,7 +6,7 @@ app_name = NewappConfig.name
 
 urlpatterns = [
     path("", product_list, name="product_list"),
-    path("products/<int:pk>/", product_detail, name='product_detail'),
+    path("products/<int:pk>/", product_detail, name="product_detail"),
     path("contacts/", contacts, name="contact"),
-    path("register/", register, name="register")
+    path("register/", register, name="register"),
 ]
