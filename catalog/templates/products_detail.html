@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block content %}
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col-4">
+                    <div class="card shadow-sm">
+                        <img src="{{ product.image_previews | media_filter }}" alt="">
+                        <div class="card-body">
+                            <p class="card-text">Название: {{ product.name }}</p>
+                            <p class="card-text">Описание: {{ product.description }}</p>
+                            <p class="card-text">Цена: {{ product.price }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-outline-secondary" href="{% url 'catalog:product_list' %}"
+                                       role="button">Назад</a>
+                                </div>
+                                <small class="text-body-secondary"
+                                       style="color: gray;"> {{ product.updated_at }}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-8">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Характеристики</th>
+                            <th scope="col"></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Название</th>
+                            <td>{{ product.name }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Наличие</th>
+                            <td>{% if product.is_active %}
+                                В наличии
+                                {% else %}
+                                Нет в наличии
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Цена</th>
+                            <td>{{ product.price }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Состояние</th>
+                            <td colspan="2">Новый</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

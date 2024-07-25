@@ -1,7 +1,9 @@
+import os
+from django.core.files import File
 from django.core.management import BaseCommand
+from django.utils import timezone
 
 from catalog.models import Product, Category
-from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -32,6 +34,15 @@ class Command(BaseCommand):
             category_4 = Category.objects.get(name="Гарнитура")
         except Category.DoesNotExist:
             category_4 = None
+
+        default_images_path = 'media/default/'
+        default_images = {
+            "Ноутбук_Dell": "dell_default.jpg",
+            "Ноутбук_Alienware": "alienware_default.jpg",
+            "Планшет": "tablet_default.jpg",
+            "Телефон": "phone_default.jpg",
+            "Наушники": "headphones_default.jpg",
+        }
 
         product_list = [
             {
@@ -76,8 +87,14 @@ class Command(BaseCommand):
             },
         ]
 
-        products_for_create = []
         for product_item in product_list:
-            products_for_create.append(Product(**product_item))
+            product = Product(**product_item)
 
-        Product.objects.bulk_create(products_for_create)
+            default_image_name = default_images.get(product_item["name"])
+            if default_image_name:
+                default_image_path = os.path.join(default_images_path, default_image_name)
+                if os.path.exists(default_image_path):
+                    with open(default_image_path, 'rb') as image_file:
+                        product.image_previews.save(default_image_name, File(image_file), save=False)
+
+            product.save()
