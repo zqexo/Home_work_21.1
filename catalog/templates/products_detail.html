@@ -42,9 +42,9 @@
                             <th scope="row">Наличие</th>
                             <td>{% if product.is_active %}
                                 В наличии
-                                {% else %}
+                            {% else %}
                                 Нет в наличии
-                                {% endif %}
+                            {% endif %}
                             </td>
 
                         </tr>
@@ -56,6 +56,21 @@
                         <tr>
                             <th scope="row">Состояние</th>
                             <td colspan="2">Новый</td>
+                        </tr>
+                         <tr>
+                            <th scope="row">Категория</th>
+                            <td>{{ product.product_category }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Дата создания</th>
+                            <td>{{ product.created_at }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Дата последнего изменения</th>
+                            <td>{{ product.updated_at }}</td>
+
                         </tr>
                         </tbody>
                     </table>
