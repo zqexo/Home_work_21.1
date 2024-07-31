@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'catalog/base.html' %}
 {% block content %}
     <div class="container">
         <div class="row text-start">
@@ -37,13 +37,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="phone">Телефон</label>
-                                <input type="text" name="
-" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                                <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
                             </div>
                             <div class="mb-3">
                                 <label for="message">Сообщение</label>
                                 <textarea type="text" name="message" class="form-control" id="message"
-                                          placeholder="Контактный телефон" required></textarea>
+                                          placeholder="Сообщение" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
                         </form>

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "catalog/base.html" %}
 
 {% load static %}
 {% load form_tags %}
@@ -9,7 +9,7 @@
             <div class="col-lg-6 col-md-8">
                 <div class="card shadow-sm bg-light rounded-4">
                     <div class="card-header bg-primary text-white text-center rounded-top-4">
-                        <h2>Хотите удалить продукт?</h2>
+                        <h2>Хотите удалить продукт {{ object.name }}?</h2>
                     </div>
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
