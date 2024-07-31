@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
 from django.views.generic import (
     ListView,
     DetailView,
@@ -21,14 +21,18 @@ def contacts(request):
 
 class ProductListView(ListView):
     model = Product
-    context_object_name = "products"
     extra_context = {"title": "Продукты"}
 
 
 class ProductDetailView(DetailView):
     model = Product
-    context_object_name = "product"
     extra_context = {"title": "Продукт"}
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_counter += 1
+        self.object.save()
+        return self.object
 
 
 def register(request):
@@ -37,14 +41,30 @@ def register(request):
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = "__all__"
+    fields = [
+        'name',
+        'description',
+        'image_previews',
+        'product_category',
+        'price',
+        'is_active',
+    ]
     success_url = reverse_lazy("catalog:product_list")
 
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = "__all__"
-    success_url = reverse_lazy("catalog:product_list")
+    fields = [
+        'name',
+        'description',
+        'image_previews',
+        'product_category',
+        'price',
+        'is_active',
+    ]
+
+    def get_success_url(self):
+        return reverse("catalog:product_detail", args=[self.kwargs.get('pk')])
 
 
 class ProductDeleteView(DeleteView):

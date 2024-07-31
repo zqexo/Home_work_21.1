@@ -8,16 +8,16 @@
                     <div class="card shadow-sm">
                         <img src="{{ product.image_previews | media_filter }}" alt="">
                         <div class="card-body">
-                            <p class="card-text">Название: {{ product.name }}</p>
-                            <p class="card-text">Описание: {{ product.description }}</p>
-                            <p class="card-text">Цена: {{ product.price }}</p>
+                            <p class="card-text">Название: {{ object.name }}</p>
+                            <p class="card-text">Описание: {{ object.description }}</p>
+                            <p class="card-text">Цена: {{ object.price }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a class="btn btn-outline-secondary" href="{% url 'catalog:product_list' %}"
                                        role="button">Назад</a>
                                 </div>
                                 <small class="text-body-secondary"
-                                       style="color: gray;"> {{ product.updated_at }}</small>
+                                       style="color: gray;"> {{ object.updated_at }}</small>
                             </div>
                         </div>
                     </div>
@@ -35,12 +35,12 @@
                         <tbody>
                         <tr>
                             <th scope="row">Название</th>
-                            <td>{{ product.name }}</td>
+                            <td>{{ object.name }}</td>
 
                         </tr>
                         <tr>
                             <th scope="row">Наличие</th>
-                            <td>{% if product.is_active %}
+                            <td>{% if object.is_active %}
                                 В наличии
                             {% else %}
                                 Нет в наличии
@@ -50,26 +50,32 @@
                         </tr>
                         <tr>
                             <th scope="row">Цена</th>
-                            <td>{{ product.price }}</td>
+                            <td>{{ object.price }}</td>
 
                         </tr>
                         <tr>
                             <th scope="row">Состояние</th>
                             <td colspan="2">Новый</td>
                         </tr>
-                         <tr>
+                        <tr>
                             <th scope="row">Категория</th>
-                            <td>{{ product.product_category }}</td>
+                            <td>{{ object.product_category }}</td>
 
                         </tr>
+
                         <tr>
                             <th scope="row">Дата создания</th>
-                            <td>{{ product.created_at }}</td>
+                            <td>{{ object.created_at }}</td>
 
                         </tr>
                         <tr>
                             <th scope="row">Дата последнего изменения</th>
-                            <td>{{ product.updated_at }}</td>
+                            <td>{{ object.updated_at }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-primary border-light">Количество просмотров</th>
+                            <td class="text-primary border-light">{{ object.views_counter }}</td>
 
                         </tr>
                         </tbody>

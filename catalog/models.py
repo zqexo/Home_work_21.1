@@ -23,27 +23,25 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Наименование", help_text="Введите название")
-    description = models.TextField(verbose_name="Описание", **NULLABLE, help_text="Введите описание")
+    name = models.CharField(max_length=100, verbose_name="Наименование")
+    description = models.TextField(verbose_name="Описание", **NULLABLE)
     image_previews = models.ImageField(
-        upload_to="products/", verbose_name="Превью", **NULLABLE, help_text="Выберите фото"
+        upload_to="products/", verbose_name="Превью", **NULLABLE
     )
     product_category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name="products",
         **NULLABLE,
-        verbose_name="Категория",
-        help_text="Укажите категорию",
+        verbose_name="Категория"
     )
-    price = models.IntegerField(verbose_name="Цена", help_text="Укажите цену",)
+    price = models.IntegerField(verbose_name="Цена")
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания записи"
     )
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Дата последнего изменения записи"
     )
-
     views_counter = models.PositiveIntegerField(default=0, verbose_name="Количество просмотров")
     is_active = models.BooleanField(default=True, verbose_name="В наличии")
 
