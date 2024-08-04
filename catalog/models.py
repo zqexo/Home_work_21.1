@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.text import slugify
+from django.urls import reverse
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -33,7 +35,7 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name="products",
         **NULLABLE,
-        verbose_name="Категория"
+        verbose_name="Категория",
     )
     price = models.IntegerField(verbose_name="Цена")
     created_at = models.DateTimeField(
@@ -42,7 +44,9 @@ class Product(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Дата последнего изменения записи"
     )
-    views_counter = models.PositiveIntegerField(default=0, verbose_name="Количество просмотров")
+    views_counter = models.PositiveIntegerField(
+        default=0, verbose_name="Количество просмотров"
+    )
     is_active = models.BooleanField(default=True, verbose_name="В наличии")
 
     def __str__(self):
@@ -52,3 +56,28 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ("name",)
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Заголовок")
+    slug = models.CharField(
+        max_length=200, **NULLABLE, verbose_name="Slug_url"
+    )
+    content = models.TextField(verbose_name="Наполнение")
+    preview_image = models.ImageField(
+        upload_to="blog_previews/", **NULLABLE, verbose_name="Изображение"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    published = models.BooleanField(default=True, verbose_name="Отображать на сайте")
+    views = models.PositiveIntegerField(default=0, verbose_name="Количество просмотров")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('catalog:blogpost_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        verbose_name = "Публикация"
+        verbose_name_plural = "Публикации"
+        ordering = ("title",)

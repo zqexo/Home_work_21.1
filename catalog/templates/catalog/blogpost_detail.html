@@ -1,0 +1,69 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col-4">
+                    <div class="card shadow-sm">
+                        {# "title", "slug", "content", "preview_image", "created_at", "published", "views"#}
+
+                        <img src="{{ object.preview_image | media_filter }}" alt="">
+                        <div class="card-body">
+                            <p class="card-text">Название: {{ object.title }}</p>
+                            <p class="card-text">Описание: {{ object.content }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-outline-secondary" href="{% url 'catalog:blogpost_list' %}"
+                                       role="button">Назад</a>
+                                </div>
+                                <small class="text-body-secondary"
+                                       style="color: gray;"> {{ object.created_at }}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card col-8">
+                    <p class="btn text-primary border-light flex">Контент:</p>
+                <p class="card-body"> {{ object.content }}</p>
+                </div>
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Описание</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Название и slug</th>
+                            <td>{{ object.title }}, {{ object.slug }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Отображение на странице</th>
+                            <td>{% if object.published %}
+                                Включено
+                                {% else %}
+                                Выключено
+                                {% endif %}</td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Дата создания</th>
+                            <td>{{ object.created_at }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-primary border-light">Количество просмотров</th>
+                            <td class="text-primary border-light">{{ object.views }}</td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

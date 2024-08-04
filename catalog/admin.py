@@ -1,5 +1,5 @@
 from django.contrib import admin
-from catalog.models import Product, Category
+from catalog.models import Product, Category, BlogPost
 
 
 @admin.register(Product)
@@ -15,3 +15,10 @@ class CategoryAdmin(admin.ModelAdmin):
         "pk",
         "name",
     )
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ("pk", "title", "created_at", "published", "views")
+    search_fields = ("title", "content")
+    list_filter = ("published", "created_at")

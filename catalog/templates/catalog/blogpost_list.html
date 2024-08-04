@@ -1,0 +1,39 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+     <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <a class="btn btn-outline-primary d-flex justify-content-center align-items-center"
+                   href="{% url 'catalog:blogpost_create' %}"
+                   role="button"><h3 class="m-0">Добавить публикацию</h3></a>
+                {% for post in object_list %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ post.preview_image| media_filter }}">
+                            <div class="card-body">
+                                <p class="card-text">{{ post.title | truncatechars:100 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-outline-secondary"
+                                           href="{% url 'catalog:blogpost_detail' post.pk %}"
+                                           role="button">Инфо</a>
+                                        <a class="btn btn-outline-secondary"
+                                           href="{% url 'catalog:blogpost_update' post.pk %}"
+                                           role="button">Изменить</a>
+                                        <a class="btn btn-outline-secondary"
+                                           href="{% url 'catalog:blogpost_delete' post.pk %}"
+                                           role="button">Удалить</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-body-secondary ms-3 mb-1"
+                                   style="color: gray;"> Последнее обновление: {{ post.created_at }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
