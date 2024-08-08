@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "catalog",
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -34,7 +35,7 @@ ROOT_URLCONF = "djangoProject2.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -46,6 +47,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "djangoProject2.wsgi.application"
 
@@ -99,3 +101,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+CRISPY_TEMPLATE_PACK = "bootstrap4"
