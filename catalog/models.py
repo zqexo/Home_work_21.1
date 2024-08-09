@@ -49,13 +49,19 @@ class Product(models.Model):
     )
     is_active = models.BooleanField(default=True, verbose_name="В наличии")
 
-    def __str__(self):
-        return f"{self.name}"
-
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ("name",)
+
+    def get_active_version(self):
+        return self.versions.filter(version_is_valid=True).first()
+
+    def __str__(self):
+        active_version = self.get_active_version()
+        if active_version:
+            return f"{self.name} (Active Version: {active_version.version_number})"
+        return self.name
 
 
 class BlogPost(models.Model):

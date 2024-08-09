@@ -13,6 +13,10 @@ from catalog.views import (
     BlogPostCreateView,
     BlogPostUpdateView,
     BlogPostDeleteView,
+    VersionListView,
+    VersionCreateView,
+    VersionDeleteView,
+    VersionUpdateView,
 )
 
 app_name = NewappConfig.name
@@ -30,4 +34,8 @@ urlpatterns = [
     path("createpost/", BlogPostCreateView.as_view(), name="blogpost_create"),
     path("update/<int:pk>", BlogPostUpdateView.as_view(), name="blogpost_update"),
     path("deletepost/<int:pk>", BlogPostDeleteView.as_view(), name="blogpost_delete"),
+    path("versions/", VersionListView.as_view(), name="version_list"),
+    path("versions/new/", VersionCreateView.as_view(), name="version_create"),
+    path("versions/<int:pk>/edit/", VersionUpdateView.as_view(), name="version_update"),
+    path("versions/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"),
 ]

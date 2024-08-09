@@ -132,3 +132,30 @@ class BlogPostDeleteView(DeleteView):
     model = BlogPost
     template_name = "catalog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("catalog:blogpost_list")
+
+
+class VersionListView(ListView):
+    model = Version
+    template_name = "catalog/version_list.html"
+    context_object_name = "versions"
+
+
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+    template_name = "catalog/version_form.html"
+    success_url = reverse_lazy("catalog:version_list")
+
+
+class VersionUpdateView(UpdateView):
+    model = Version
+    form_class = VersionForm
+    template_name = "catalog/version_form.html"
+    success_url = reverse_lazy("catalog:version_list")
+
+
+
+class VersionDeleteView(DeleteView):
+    model = Version
+    template_name = "catalog/version_confirm_delete.html"
+    success_url = reverse_lazy("catalog:version_list")

@@ -1,0 +1,23 @@
+{% extends "catalog/base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow-sm bg-light rounded-4">
+                    <div class="card-header bg-primary text-white text-center rounded-top-4">
+                        <h2>Хотите удалить версию {{ object.version_number }}-{{ version.version_name }} ?</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-danger flex-grow-1 me-2 rounded-4">Удалить</button>
+                                <a class="btn btn-outline-primary flex-grow-1 ms-2 rounded-4" href="{% url 'catalog:version_list' %}" role="button">Отменить</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -28,8 +28,15 @@ class StyleFormMixin:
 
 
 FORBIDDEN_WORDS = [
-    "казино", "криптовалюта", "крипта", "биржа", "дешево",
-    "бесплатно", "обман", "полиция", "радар"
+    "казино",
+    "криптовалюта",
+    "крипта",
+    "биржа",
+    "дешево",
+    "бесплатно",
+    "обман",
+    "полиция",
+    "радар",
 ]
 
 
@@ -61,25 +68,24 @@ class ProductForm(StyleFormMixin, ModelForm):
 class VersionForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Version
-        fields = "__all__"
+        fields = ["product", "version_number", "version_name", "version_is_valid"]
 
-    class VersionForm(forms.ModelForm):
-        class Meta:
-            model = Version
-            fields = ["product", "version_number", "version_name", "version_is_valid"]
+    def clean(self):
+        # Почему-то не работает
 
-        def clean(self):
-            # Почему-то не работает
+        cleaned_data = super().clean()
+        product = cleaned_data.get("product")
+        version_is_valid = cleaned_data.get("version_is_valid")
 
-            cleaned_data = super().clean()
-            product = cleaned_data.get("product")
-            version_is_valid = cleaned_data.get("version_is_valid")
+        if product and version_is_valid is not None:
+            if version_is_valid:
+                if (
+                    Version.objects.filter(product=product, version_is_valid=True)
+                    .exclude(id=self.instance.id)
+                    .exists()
+                ):
+                    raise ValidationError(
+                        "В один момент может быть только одна активная версия продукта."
+                    )
 
-            if product and version_is_valid is not None:
-                if version_is_valid:
-                    if Version.objects.filter(product=product, version_is_valid=True).exclude(
-                            id=self.instance.id).exists():
-                        raise ValidationError(
-                            "В один момент может быть только одна активная версия продукта.")
-
-            return cleaned_data
+        return cleaned_data
