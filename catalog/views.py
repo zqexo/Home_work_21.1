@@ -154,7 +154,6 @@ class VersionUpdateView(UpdateView):
     success_url = reverse_lazy("catalog:version_list")
 
 
-
 class VersionDeleteView(DeleteView):
     model = Version
     template_name = "catalog/version_confirm_delete.html"

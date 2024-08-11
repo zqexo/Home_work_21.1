@@ -15,7 +15,7 @@
                 {% for product in object_list %}
                     <div class="col">
                         <div class="card shadow-sm product-card">
-                            <img src="{{ product.image_previews | media_filter }}">
+                            <img src="{{ product.image_previews | media_filter }}" alt="">
                             <div class="card-body">
                                 <p class="card-text">{{ product.name | truncatechars:100 }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
