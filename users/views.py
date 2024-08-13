@@ -22,7 +22,9 @@ class RegisterView(CreateView):
         user.is_active = False
         token = secrets.token_hex(16)
         host = self.request.get_host()
-        url = f'https://{host}/users/email-confirm/{token}/'
+        user.token = token
+        user.save()
+        url = f'http://{host}/users/email-confirm/{token}/'
         send_mail(
             subject='Подтверждение регистрации',
             message=f'Добро пожаловать на сайт! Для подтверждения регистрации перейди по ссылке: {url}',
@@ -35,6 +37,7 @@ class RegisterView(CreateView):
 def email_verification(request, token):
     user = get_object_or_404(User, token=token)
     user.is_active = True
+    user.save()
     return redirect(reverse('users:login'))
 
 
