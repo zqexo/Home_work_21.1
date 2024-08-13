@@ -51,7 +51,8 @@
       "created_at": "2024-07-25T17:37:06.682Z",
       "updated_at": "2024-07-31T12:17:26.037Z",
       "views_counter": 1,
-      "is_active": true
+      "is_active": true,
+      "owner": null
     }
   },
   {
@@ -64,9 +65,10 @@
       "product_category": 11,
       "price": 200000,
       "created_at": "2024-07-25T17:37:06.686Z",
-      "updated_at": "2024-08-08T14:28:37.088Z",
-      "views_counter": 5,
-      "is_active": true
+      "updated_at": "2024-08-13T12:06:15.105Z",
+      "views_counter": 6,
+      "is_active": true,
+      "owner": null
     }
   },
   {
@@ -81,7 +83,8 @@
       "created_at": "2024-07-25T17:37:06.689Z",
       "updated_at": "2024-08-03T13:11:24.888Z",
       "views_counter": 2,
-      "is_active": true
+      "is_active": true,
+      "owner": null
     }
   },
   {
@@ -96,7 +99,8 @@
       "created_at": "2024-07-25T17:37:06.692Z",
       "updated_at": "2024-07-25T17:37:06.692Z",
       "views_counter": 0,
-      "is_active": true
+      "is_active": true,
+      "owner": null
     }
   },
   {
@@ -109,9 +113,26 @@
       "product_category": 14,
       "price": 6000,
       "created_at": "2024-07-25T17:37:06.694Z",
-      "updated_at": "2024-08-11T10:30:13.628Z",
-      "views_counter": 51,
-      "is_active": true
+      "updated_at": "2024-08-13T12:15:07.366Z",
+      "views_counter": 54,
+      "is_active": true,
+      "owner": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 91,
+    "fields": {
+      "name": "Микрофон",
+      "description": "Микрофон у которого есть владелец",
+      "image_previews": "products/micro.png",
+      "product_category": 14,
+      "price": 999,
+      "created_at": "2024-08-13T12:11:31.136Z",
+      "updated_at": "2024-08-13T12:15:11.285Z",
+      "views_counter": 5,
+      "is_active": true,
+      "owner": 26
     }
   },
   {
@@ -194,6 +215,16 @@
       "product": null,
       "version_number": 12,
       "version_name": "просто версия без продукта",
+      "version_is_valid": true
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 14,
+    "fields": {
+      "product": 91,
+      "version_number": 1,
+      "version_name": "С владельцем",
       "version_is_valid": true
     }
   }

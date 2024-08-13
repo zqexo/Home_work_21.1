@@ -2,7 +2,6 @@ from django.urls import path
 from catalog.apps import NewappConfig
 from catalog.views import (
     contacts,
-    register,
     ProductListView,
     ProductDetailView,
     ProductCreateView,
@@ -36,5 +35,7 @@ urlpatterns = [
     path("versions/", VersionListView.as_view(), name="version_list"),
     path("versions/new/", VersionCreateView.as_view(), name="version_create"),
     path("versions/<int:pk>/edit/", VersionUpdateView.as_view(), name="version_update"),
-    path("versions/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"),
+    path(
+        "versions/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"
+    ),
 ]

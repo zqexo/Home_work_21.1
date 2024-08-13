@@ -1,8 +1,8 @@
 from django.db import models
-from django.utils.text import slugify
 from django.urls import reverse
 
-NULLABLE = {"blank": True, "null": True}
+from djangoProject2.utils import NULLABLE
+from users.models import User
 
 
 class Category(models.Model):
@@ -48,6 +48,13 @@ class Product(models.Model):
         default=0, verbose_name="Количество просмотров"
     )
     is_active = models.BooleanField(default=True, verbose_name="В наличии")
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="products",
+        **NULLABLE,
+        verbose_name="Владелец",
+    )
 
     class Meta:
         verbose_name = "Продукт"

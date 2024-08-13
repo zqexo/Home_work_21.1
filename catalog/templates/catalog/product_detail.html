@@ -74,6 +74,14 @@
 
                         </tr>
                         <tr>
+                            <th scope="row">Владелец продукта</th>
+                            {% if product.owner %}
+                            <td>{{ product.owner }}</td>
+                            {% else %}
+                            <td>Базовый продукт (без владельца)</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
                             <th scope="row" class="text-primary border-light">Количество просмотров</th>
                             <td class="text-primary border-light">{{ object.views_counter }}</td>
 
