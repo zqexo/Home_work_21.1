@@ -100,13 +100,6 @@
             display: block !important;
         }
 
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
         .product-card {
             border: 3px solid transparent;
             transition: transform 0.4s ease, box-shadow 0.4s ease-out;
@@ -117,8 +110,8 @@
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transform: scale(1.02) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 25px 50px rgba(0, 0, 0, 0.2);
         }
 
         .btn-group-wrapper {
@@ -170,8 +163,14 @@
         }
 
         .btn-circle-add:hover {
-            transform: translateY(-2px);
+            transform: scale(1.025) translateY(-10px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-circle-add:hover {
+            color: #fff; /* цвет текста при наведении */
+            background-color: rgba(0, 123, 255, 0.2); /* полупрозрачный синий фон при наведении */
+            border-color: #007bff; /* цвет границы при наведении */
         }
 
         .btn-add-icon {
@@ -188,10 +187,33 @@
         }
 
         .footer-radius {
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
         }
 
+        /* CSS для кнопки с идентификатором */
+        #delete-button {
+            color: #6c757d; /* цвет текста кнопки */
+            border-color: #6c757d; /* цвет границы кнопки */
+        }
+
+        #delete-button:hover {
+            color: #fff; /* цвет текста при наведении */
+            background-color: #dc3545; /* красный фон при наведении */
+            border-color: #dc3545; /* красная граница при наведении */
+        }
+
+        /* CSS для кнопки с дополнительным классом */
+        .btn-delete {
+            color: #6c757d; /* цвет текста кнопки */
+            border-color: #6c757d; /* цвет границы кнопки */
+        }
+
+        .btn-delete:hover {
+            color: #fff; /* цвет текста при наведении */
+            background-color: #dc3545; /* красный фон при наведении */
+            border-color: #dc3545; /* красная граница при наведении */
+        }
 
     </style>
 
@@ -279,10 +301,9 @@
                 <h1 class="fw-light">Какое-то название</h1>
                 <p class="lead text-body-secondary">Какое-то описание.</p>
                 <p>
-                    <a href="{% url 'catalog:contact' %}" class="btn btn-primary my-2">Контакты</a>
-                    <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary my-2">Главная страница</a>
-                    <a href="{% url 'catalog:version_list' %}" class="btn btn-outline-secondary my-2">Версии</a>
-                    <a href="{% url 'catalog:blogpost_list' %}" class="btn btn-outline-primary my-2">Блог</a>
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-primary my-2">Главная страница</a>
+                    <a href="{% url 'catalog:version_list' %}" class="btn btn-outline-primary my-2">Версии</a>
+                    <a href="{% url 'catalog:blogpost_list' %}" class="btn btn-outline-secondary my-2">Блог</a>
                 </p>
             </div>
         </div>

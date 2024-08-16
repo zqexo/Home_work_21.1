@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 from catalog.apps import NewappConfig
 from catalog.views import (
@@ -21,7 +22,7 @@ from catalog.views import (
 app_name = NewappConfig.name
 
 urlpatterns = [
-    path("", ProductListView.as_view(), name="product_list"),
+    path("", login_required(ProductListView.as_view()), name="product_list"),
     path("products/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("contacts/", contacts, name="contact"),
     path("create/", ProductCreateView.as_view(), name="create"),

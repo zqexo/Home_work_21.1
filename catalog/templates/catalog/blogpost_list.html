@@ -15,6 +15,7 @@
                     <div class="card shadow-sm product-card">
                         <img src="{{ post.preview_image | media_filter }}" alt="">
                         <div class="card-body">
+                            <p class="card-text">Описание: {{ post.content | truncatechars:100 }}</p>
                             <p class="card-text">{{ post.title | truncatechars:100 }}</p>
                             <div class="btn-group btn-group-wrapper">
                                 <a class="btn btn-outline-secondary btn-circle"
@@ -33,12 +34,15 @@
                                     <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить" class="btn-icon">
                                 </a>
                             </div>
+
                         </div>
                         <small class="text-body-secondary ms-3 mb-1"
-                               style="color: gray;"> Последнее обновление: {{ product.updated_at }}</small>
+                               style="color: gray;"> Дата создания: {{ post.created_at }}</small>
                     </div>
+
                 {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}

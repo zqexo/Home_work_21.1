@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     ListView,
     DetailView,
@@ -15,6 +17,7 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, BlogPost, Version
 
 
+@login_required
 def contacts(request):
     name = request.POST.get("name")
     phone = request.POST.get("phone")
@@ -23,12 +26,12 @@ def contacts(request):
     return render(request, "catalog/contacts.html")
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     extra_context = {"title": "Продукты"}
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     extra_context = {"title": "Продукт"}
 
@@ -39,7 +42,7 @@ class ProductDetailView(DetailView):
         return self.object
 
 
-class ProductCreateView(CreateView, LoginRequiredMixin):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
@@ -52,7 +55,7 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView, LoginRequiredMixin):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -84,12 +87,12 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin):
             )
 
 
-class ProductDeleteView(DeleteView, LoginRequiredMixin):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
 
 
-class BlogPostListView(ListView):
+class BlogPostListView(LoginRequiredMixin, ListView):
     model = BlogPost
     template_name = "catalog/blogpost_list.html"
 
@@ -97,7 +100,7 @@ class BlogPostListView(ListView):
         return BlogPost.objects.filter(published=True)
 
 
-class BlogPostDetailView(DetailView):
+class BlogPostDetailView(LoginRequiredMixin, DetailView):
     model = BlogPost
     template_name = "catalog/blogpost_detail.html"
     context_object_name = "blogpost"
@@ -110,7 +113,7 @@ class BlogPostDetailView(DetailView):
         return self.object
 
 
-class BlogPostCreateView(CreateView):
+class BlogPostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     template_name = "catalog/blogpost_form.html"
     fields = ("title", "content", "preview_image", "published")
@@ -123,7 +126,7 @@ class BlogPostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogPostUpdateView(UpdateView):
+class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     template_name = "catalog/blogpost_form.html"
     fields = ("title", "content", "preview_image", "published")
@@ -132,33 +135,33 @@ class BlogPostUpdateView(UpdateView):
         return reverse("catalog:blogpost_detail", args=[self.kwargs.get("pk")])
 
 
-class BlogPostDeleteView(DeleteView):
+class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost
     template_name = "catalog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("catalog:blogpost_list")
 
 
-class VersionListView(ListView):
+class VersionListView(LoginRequiredMixin, ListView):
     model = Version
     template_name = "catalog/version_list.html"
     context_object_name = "versions"
 
 
-class VersionCreateView(CreateView):
+class VersionCreateView(LoginRequiredMixin, CreateView):
     model = Version
     form_class = VersionForm
     template_name = "catalog/version_form.html"
     success_url = reverse_lazy("catalog:version_list")
 
 
-class VersionUpdateView(UpdateView):
+class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
     template_name = "catalog/version_form.html"
     success_url = reverse_lazy("catalog:version_list")
 
 
-class VersionDeleteView(DeleteView):
+class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
     template_name = "catalog/version_confirm_delete.html"
     success_url = reverse_lazy("catalog:version_list")
