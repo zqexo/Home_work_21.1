@@ -4,11 +4,15 @@
 {% block content %}
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
-            <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
-               href="{% url 'catalog:blogpost_create' %}"
-               role="button">
-                <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
-            </a>
+            {% if user.is_authenticated %}
+                {% if perms.catalog.add_blogpost %}
+                    <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
+                       href="{% url 'catalog:blogpost_create' %}"
+                       role="button">
+                        <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
+                    </a>
+                {% endif %}
+            {% endif %}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {% for post in object_list %}
                     <div class="col">
@@ -17,24 +21,30 @@
                         <div class="card-body">
                             <p class="card-text">Описание: {{ post.content | truncatechars:100 }}</p>
                             <p class="card-text">{{ post.title | truncatechars:100 }}</p>
-                            <div class="btn-group btn-group-wrapper">
-                                <a class="btn btn-outline-secondary btn-circle"
-                                   href="{% url 'catalog:blogpost_detail' post.pk %}"
-                                   role="button" title="Инфо">
-                                    <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
-                                </a>
-                                <a class="btn btn-outline-secondary btn-circle"
-                                   href="{% url 'catalog:blogpost_update' post.pk %}"
-                                   role="button" title="Изменить">
-                                    <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить" class="btn-icon">
-                                </a>
-                                <a class="btn btn-outline-secondary btn-circle"
-                                   href="{% url 'catalog:blogpost_delete' post.pk %}"
-                                   role="button" title="Удалить">
-                                    <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить" class="btn-icon">
-                                </a>
-                            </div>
-
+                            {% if user.is_authenticated %}
+                                <div class="btn-group btn-group-wrapper">
+                                    <a class="btn btn-outline-secondary btn-circle"
+                                       href="{% url 'catalog:blogpost_detail' post.pk %}"
+                                       role="button" title="Инфо">
+                                        <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
+                                    </a>
+                                    {% if perms.catalog.update_blogpost %}
+                                        <a class="btn btn-outline-secondary btn-circle"
+                                           href="{% url 'catalog:blogpost_update' post.pk %}"
+                                           role="button" title="Изменить">
+                                            <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"
+                                                 class="btn-icon">
+                                        </a>
+                                    {% elif perms.catalog.delete_blogpost %}
+                                        <a class="btn btn-outline-secondary btn-circle"
+                                           href="{% url 'catalog:blogpost_delete' post.pk %}"
+                                           role="button" title="Удалить">
+                                            <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить"
+                                                 class="btn-icon">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                         </div>
                         <small class="text-body-secondary ms-3 mb-1"
                                style="color: gray;"> Дата создания: {{ post.created_at }}</small>
