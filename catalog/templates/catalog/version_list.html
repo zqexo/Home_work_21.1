@@ -42,7 +42,8 @@
                                                         <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"
                                                              class="btn-icon">
                                                     </a>
-                                                {% elif perms.catalog.delete_version %}
+                                                {% endif %}
+                                                {% if perms.catalog.delete_version %}
                                                     <a class="btn btn-outline-secondary btn-circle"
                                                        href="{% url 'catalog:version_delete' version.pk %}"
                                                        role="button" title="Удалить">

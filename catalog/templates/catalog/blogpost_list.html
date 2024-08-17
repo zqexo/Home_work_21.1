@@ -35,7 +35,8 @@
                                             <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"
                                                  class="btn-icon">
                                         </a>
-                                    {% elif perms.catalog.delete_blogpost %}
+                                    {% endif %}
+                                    {% if perms.catalog.delete_blogpost %}
                                         <a class="btn btn-outline-secondary btn-circle"
                                            href="{% url 'catalog:blogpost_delete' post.pk %}"
                                            role="button" title="Удалить">

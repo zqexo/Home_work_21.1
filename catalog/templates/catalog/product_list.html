@@ -7,11 +7,11 @@
         <div class="container">
             {% if user.is_authenticated %}
                 {% if perms.catalog.add_product %}
-                <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
-                   href="{% url 'catalog:create' %}"
-                   role="button">
-                    <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
-                </a>
+                    <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
+                       href="{% url 'catalog:create' %}"
+                       role="button">
+                        <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
+                    </a>
                 {% endif %}
             {% endif %}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -38,7 +38,8 @@
                                                     <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"
                                                          class="btn-icon">
                                                 </a>
-                                            {% elif perms.ctatalog.delete_product %}
+                                            {% endif %}
+                                            {% if perms.catalog.delete_product %}
                                                 <a class="btn btn-outline-secondary btn-circle btn-delete"
                                                    href="{% url 'catalog:delete' product.pk %}"
                                                    role="button" title="Удалить">
