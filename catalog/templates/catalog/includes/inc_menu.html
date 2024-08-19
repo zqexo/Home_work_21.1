@@ -18,8 +18,14 @@
                     <br>
                     <li><a href="{% url 'catalog:product_list' %}" class="text-black-80">Главная</a></li>
                     <li><a href="{% url 'catalog:version_list' %}" class="text-black-80">Версии</a></li>
+                    <li><a href="{% url 'catalog:category_list' %}" class="text-black-80">Категории</a></li>
                     <li><a href="{% url 'catalog:blogpost_list' %}" class="text-black-80">Блог</a></li>
                     <li><a href="{% url 'catalog:contact' %}" class="text-black-80">Контакты</a></li>
+                    <br>
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'catalog:clear_cache' %}" class="text-secondary">Очистить кэш</a><small class="text-secondary"> (superuser)</small>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

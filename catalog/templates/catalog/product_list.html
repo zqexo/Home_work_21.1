@@ -5,62 +5,77 @@
 {% block content %}
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
-            {% if user.is_authenticated %}
-                {% if perms.catalog.add_product %}
-                    <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
-                       href="{% url 'catalog:create' %}"
-                       role="button">
-                        <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
-                    </a>
-                {% endif %}
-            {% endif %}
+            <div class="col-12">
+                <div class="row">
+                    <!-- Кнопка "Добавить" -->
+                    <div class="col-6 d-flex justify-content-start">
+                        {% if user.is_authenticated %}
+                            {% if perms.catalog.add_product %}
+                                <a class="btn btn-primary btn-circle-add d-flex justify-content-center align-items-center"
+                                   href="{% url 'catalog:create' %}"
+                                   role="button">
+                                    <img src="{% static 'crud_icons/add.png' %}" alt="Добавить" class="btn-add-icon">
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <!-- Список категорий -->
+                    <div class="col-6 d-flex justify-content-end">
+                        <button class="btn btn-secondary text-center dropdown-custom rounded-pill" type="button"
+                                id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            Категории
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-transparent" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item text-secondary" href="{% url 'catalog:product_list' %}">Все категории</a></li>
+                            {% for category in categories %}
+                                <li><a class="dropdown-item text-secondary" href="{% url 'catalog:product_list_by_category' category.category_slug %}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Список продуктов -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
                 {% for product in object_list %}
                     {% if product.is_published %}
-                    <div class="col">
-                        <div class="card shadow-sm product-card">
-                            <img src="{{ product.image_previews | media_filter }}" alt="">
-                            <div class="card-body">
-                                <p class="card-text">{{ product.name | truncatechars:100 }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group btn-group-wrapper">
-                                        <a class="btn btn-outline-secondary btn-circle"
-                                           href="{% url 'catalog:product_detail' product.pk %}"
-                                           role="button" title="Инфо">
-                                            <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
-                                        </a>
+                        <div class="col">
+                            <div class="card shadow-sm product-card">
+                                <img src="{{ product.image_previews | media_filter }}" alt="">
+                                <div class="card-body">
+                                    <p class="card-text">{{ product.name | truncatechars:100 }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group btn-group-wrapper">
+                                            <a class="btn btn-outline-secondary btn-circle"
+                                               href="{% url 'catalog:product_detail' product.pk %}"
+                                               role="button" title="Инфо">
+                                                <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
+                                            </a>
                                             {% if perms.catalog.update_product or perms.catalog.can_edit_published and perms.catalog.can_edit_description or user == product.owner %}
-
                                                 <a class="btn btn-outline-secondary btn-circle"
                                                    href="{% url 'catalog:edit' product.pk %}"
                                                    role="button" title="Изменить">
-                                                    <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"
-                                                         class="btn-icon">
+                                                    <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить" class="btn-icon">
                                                 </a>
                                             {% endif %}
                                             {% if perms.catalog.delete_product or user == product.owner %}
                                                 <a class="btn btn-outline-secondary btn-circle btn-delete"
                                                    href="{% url 'catalog:delete' product.pk %}"
                                                    role="button" title="Удалить">
-                                                    <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить"
-                                                         class="btn-icon default">
+                                                    <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить" class="btn-icon">
                                                 </a>
                                             {% endif %}
+                                        </div>
+                                        {% if product.get_active_version.version_name %}
+                                            <small class="version-info">Актуальная версия: {{ product.get_active_version.version_number }} - {{ product.get_active_version.version_name }}</small>
+                                        {% else %}
+                                            <small class="version-info">Версия не указана</small>
+                                        {% endif %}
                                     </div>
-                                    {% if product.get_active_version.version_name %}
-                                        <small class="version-info">Актуальная
-                                            версия: {{ product.get_active_version.version_number }}
-                                            - {{ product.get_active_version.version_name }}</small>
-                                    {% else %}
-                                        <small class="version-info">Версия не указана</small>
-                                    {% endif %}
                                 </div>
+                                <small class="text-body-secondary ms-3 mb-1" style="color: gray;">Последнее обновление: {{ product.updated_at }}</small>
                             </div>
-                            <small class="text-body-secondary ms-3 mb-1"
-                                   style="color: gray;"> Последнее обновление: {{ product.updated_at }}</small>
                         </div>
-                    </div>
                     {% endif %}
                 {% endfor %}
             </div>

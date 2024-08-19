@@ -1,10 +1,11 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
 from django.views.generic import (
     ListView,
     DetailView,
@@ -14,8 +15,16 @@ from django.views.generic import (
 )
 from pytils.translit import slugify
 
-from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, BlogPost, Version
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm, CategoryForm
+from catalog.models import Product, BlogPost, Version, Category
+from catalog.services import get_products_from_cache, get_categories_from_cache
+from django.core.cache import cache
+
+
+@staff_member_required
+def clear_cache_view(request):
+    cache.clear()
+    return HttpResponse("Cache cleared!")
 
 
 @login_required
@@ -30,6 +39,18 @@ def contacts(request):
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     extra_context = {"title": "Продукты"}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = get_categories_from_cache()  # Получаем все категории
+        return context
+
+    def get_queryset(self):
+        category_slug = self.kwargs.get('category_slug')
+        if category_slug:
+            category = get_object_or_404(Category, category_slug=category_slug)
+            return get_products_from_cache().filter(product_category=category)
+        return get_products_from_cache()
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -182,3 +203,36 @@ class VersionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     permission_required = 'catalog.delete_version'
     template_name = "catalog/version_confirm_delete.html"
     success_url = reverse_lazy("catalog:version_list")
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+    template_name = "catalog/category_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = get_categories_from_cache()  # Получаем все категории
+        return context
+
+
+class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    permission_required = 'catalog.add_category'
+    template_name = "catalog/category_form.html"
+    success_url = reverse_lazy("catalog:category_list")
+
+
+class CategoryUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    permission_required = 'catalog.update_category'
+    template_name = "catalog/category_form.html"
+    success_url = reverse_lazy("catalog:category_list")
+
+
+class CategoryDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Category
+    permission_required = 'catalog.delete_category'
+    template_name = "catalog/category_confirm_delete.html"
+    success_url = reverse_lazy("catalog:category_list")

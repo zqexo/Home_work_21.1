@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 
 
 class StyleFormMixin:
@@ -104,3 +104,21 @@ class VersionForm(StyleFormMixin, ModelForm):
                     )
 
         return cleaned_data
+
+
+class CategoryForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name", "description"]
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        if any(word in name.lower() for word in FORBIDDEN_WORDS):
+            raise ValidationError("Название категории содержит запрещённые слова.")
+        return name
+
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if description and any(word in description.lower() for word in FORBIDDEN_WORDS):
+            raise ValidationError("Описание категории содержит запрещённые слова.")
+        return description

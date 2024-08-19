@@ -1,12 +1,13 @@
 from django.db import models
 from django.urls import reverse
+from pytils.translit import slugify
 
 from djangoProject2.utils import NULLABLE
 from users.models import User
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Наименование")
+    name = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание", **NULLABLE)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания записи"
@@ -14,6 +15,12 @@ class Category(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Дата последнего изменения записи"
     )
+    category_slug = models.SlugField(max_length=255, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.category_slug:
+            self.category_slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name}"

@@ -1,0 +1,60 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center mb-4">
+                    {#                    {% if user.is_authenticated %}#}
+                    {#                        {% if perms.catalog.add_category %}#}
+                    {#                            <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center mx-auto"#}
+                    {#                               href="{% url 'catalog:category_create' %}"#}
+                    {#                               role="button">#}
+                    {#                                <img src="{% static 'crud_icons/add.png' %}" alt="Добавить новую Категорию"#}
+                    {#                                     class="btn-add-icon">#}
+                    {#                            </a>#}
+                    {#                        {% endif %}#}
+                    {#                    {% endif %}#}
+                </div>
+                <div class="col-lg-8">
+                    <div class="row">
+                        {% for category in categories %}
+                            <div class="col-12 mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ category.name }}
+                                    </div>
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Описание:</strong> <br>{{ category.description }}
+                                        </div>
+{#                                                                                {% if user.is_authenticated %}#}
+{#                                                                                    <div class="btn-group">#}
+{#                                                                                        {% if perms.catalog.update_category %}#}
+{#                                                                                            <a class="btn btn-outline-secondary btn-circle"#}
+{#                                                                                               href="{% url 'catalog:category_update' category.pk %}"#}
+{#                                                                                               role="button" title="Изменить">#}
+{#                                                                                                <img src="{% static 'crud_icons/edit.png' %}" alt="Изменить"#}
+{#                                                                                                     class="btn-icon">#}
+{#                                                                                            </a>#}
+{#                                                                                        {% endif %}#}
+{#                                                                                        {% if perms.catalog.delete_category %}#}
+{#                                                                                            <a class="btn btn-outline-secondary btn-circle"#}
+{#                                                                                               href="{% url 'catalog:category_delete' category.pk %}"#}
+{#                                                                                               role="button" title="Удалить">#}
+{#                                                                                                <img src="{% static 'crud_icons/delete.png' %}" alt="Удалить"#}
+{#                                                                                                     class="btn-icon">#}
+{#                                                                                            </a>#}
+{#                                                                                        {% endif %}#}
+{#                                                                                    </div>#}
+{#                                                                                {% endif %}#}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

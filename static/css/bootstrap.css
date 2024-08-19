@@ -3470,6 +3470,7 @@ textarea.form-control-lg {
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
+  opacity: 0.8;
 }
 .dropdown-menu[data-bs-popper] {
   top: 100%;
@@ -3593,6 +3594,7 @@ textarea.form-control-lg {
   border-right: 0.3em solid transparent;
   border-bottom: 0.3em solid;
   border-left: 0.3em solid transparent;
+
 }
 .dropup .dropdown-toggle:empty::after {
   margin-left: 0;
@@ -3614,6 +3616,7 @@ textarea.form-control-lg {
   border-right: 0;
   border-bottom: 0.3em solid transparent;
   border-left: 0.3em solid;
+  opacity: 0.3;
 }
 .dropend .dropdown-toggle:empty::after {
   margin-left: 0;
@@ -3691,6 +3694,7 @@ textarea.form-control-lg {
 
 .dropdown-menu.show {
   display: block;
+  opacity: 0.3;
 }
 
 .dropdown-header {
