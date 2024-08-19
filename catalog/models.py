@@ -54,7 +54,9 @@ class Product(models.Model):
     views_counter = models.PositiveIntegerField(
         default=0, verbose_name="Количество просмотров"
     )
-    is_published = models.BooleanField(default=False, verbose_name="Публикация продукта")
+    is_published = models.BooleanField(
+        default=False, verbose_name="Публикация продукта"
+    )
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,

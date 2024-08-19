@@ -95,9 +95,9 @@ class VersionForm(StyleFormMixin, ModelForm):
         if product and version_is_valid is not None:
             if version_is_valid:
                 if (
-                        Version.objects.filter(product=product, version_is_valid=True)
-                                .exclude(id=self.instance.id)
-                                .exists()
+                    Version.objects.filter(product=product, version_is_valid=True)
+                    .exclude(id=self.instance.id)
+                    .exists()
                 ):
                     raise ValidationError(
                         "В один момент может быть только одна активная версия продукта."

@@ -42,11 +42,11 @@ class ProductListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = get_categories_from_cache()  # Получаем все категории
+        context["categories"] = get_categories_from_cache()  # Получаем все категории
         return context
 
     def get_queryset(self):
-        category_slug = self.kwargs.get('category_slug')
+        category_slug = self.kwargs.get("category_slug")
         if category_slug:
             category = get_object_or_404(Category, category_slug=category_slug)
             return get_products_from_cache().filter(product_category=category)
@@ -67,7 +67,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    permission_required = 'catalog.add_product'
+    permission_required = "catalog.add_product"
     success_url = reverse_lazy("catalog:product_list")
 
     def form_valid(self, form):
@@ -80,7 +80,7 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
-    permission_required = 'catalog.update_product'
+    permission_required = "catalog.update_product"
 
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
@@ -113,14 +113,16 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         user = self.request.user
         if user == self.object.owner:
             return ProductForm
-        if user.has_perm("catalog.can_edit_published") and user.has_perm("catalog.can_edit_description"):
+        if user.has_perm("catalog.can_edit_published") and user.has_perm(
+            "catalog.can_edit_description"
+        ):
             return ProductModeratorForm
         raise PermissionDenied("Недостаточно прав для редактирования этого товара.")
 
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
-    permission_required = 'catalog.delete_product'
+    permission_required = "catalog.delete_product"
     success_url = reverse_lazy("catalog:product_list")
 
 
@@ -147,7 +149,7 @@ class BlogPostDetailView(LoginRequiredMixin, DetailView):
 
 class BlogPostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
-    permission_required = 'catalog.add_blogpost'
+    permission_required = "catalog.add_blogpost"
     template_name = "catalog/blogpost_form.html"
     fields = ("title", "content", "preview_image", "published")
 
@@ -161,7 +163,7 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
 
 class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
-    permission_required = 'catalog.update_blogpost'
+    permission_required = "catalog.update_blogpost"
     template_name = "catalog/blogpost_form.html"
     fields = ("title", "content", "preview_image", "published")
 
@@ -171,7 +173,7 @@ class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
 
 class BlogPostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = BlogPost
-    permission_required = 'catalog.delete_blogpost'
+    permission_required = "catalog.delete_blogpost"
     template_name = "catalog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("catalog:blogpost_list")
 
@@ -185,7 +187,7 @@ class VersionListView(LoginRequiredMixin, ListView):
 class VersionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Version
     form_class = VersionForm
-    permission_required = 'catalog.add_version'
+    permission_required = "catalog.add_version"
     template_name = "catalog/version_form.html"
     success_url = reverse_lazy("catalog:version_list")
 
@@ -193,14 +195,14 @@ class VersionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class VersionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
-    permission_required = 'catalog.update_version'
+    permission_required = "catalog.update_version"
     template_name = "catalog/version_form.html"
     success_url = reverse_lazy("catalog:version_list")
 
 
 class VersionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Version
-    permission_required = 'catalog.delete_version'
+    permission_required = "catalog.delete_version"
     template_name = "catalog/version_confirm_delete.html"
     success_url = reverse_lazy("catalog:version_list")
 
@@ -211,14 +213,14 @@ class CategoryListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = get_categories_from_cache()  # Получаем все категории
+        context["categories"] = get_categories_from_cache()  # Получаем все категории
         return context
 
 
 class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
-    permission_required = 'catalog.add_category'
+    permission_required = "catalog.add_category"
     template_name = "catalog/category_form.html"
     success_url = reverse_lazy("catalog:category_list")
 
@@ -226,13 +228,13 @@ class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 class CategoryUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
-    permission_required = 'catalog.update_category'
+    permission_required = "catalog.update_category"
     template_name = "catalog/category_form.html"
     success_url = reverse_lazy("catalog:category_list")
 
 
 class CategoryDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Category
-    permission_required = 'catalog.delete_category'
+    permission_required = "catalog.delete_category"
     template_name = "catalog/category_confirm_delete.html"
     success_url = reverse_lazy("catalog:category_list")
