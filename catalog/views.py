@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -13,7 +14,7 @@ from django.views.generic import (
 )
 from pytils.translit import slugify
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, BlogPost, Version
 
 
@@ -31,7 +32,7 @@ class ProductListView(LoginRequiredMixin, ListView):
     extra_context = {"title": "Продукты"}
 
 
-class ProductDetailView(LoginRequiredMixin,  DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     extra_context = {"title": "Продукт"}
 
@@ -56,9 +57,8 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         return super().form_valid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
-    form_class = ProductForm
     permission_required = 'catalog.update_product'
 
     def get_success_url(self):
@@ -88,6 +88,14 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
                 self.get_context_data(form=form, formset=formset)
             )
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_edit_published") and user.has_perm("catalog.can_edit_description"):
+            return ProductModeratorForm
+        raise PermissionDenied("Недостаточно прав для редактирования этого товара.")
+
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
@@ -116,7 +124,7 @@ class BlogPostDetailView(LoginRequiredMixin, DetailView):
         return self.object
 
 
-class BlogPostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class BlogPostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     permission_required = 'catalog.add_blogpost'
     template_name = "catalog/blogpost_form.html"
@@ -130,7 +138,7 @@ class BlogPostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
         return super().form_valid(form)
 
 
-class BlogPostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     permission_required = 'catalog.update_blogpost'
     template_name = "catalog/blogpost_form.html"

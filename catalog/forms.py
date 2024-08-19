@@ -49,7 +49,7 @@ class ProductForm(StyleFormMixin, ModelForm):
             "image_previews",
             "product_category",
             "price",
-            "is_active",
+            "is_published",
         ]
 
     def clean_name(self):
@@ -65,13 +65,28 @@ class ProductForm(StyleFormMixin, ModelForm):
         return description
 
 
+class ProductModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = [
+            "description",
+            "product_category",
+            "is_published",
+        ]
+
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if description and any(word in description.lower() for word in FORBIDDEN_WORDS):
+            raise ValidationError("Описание продукта содержит запрещённые слова.")
+        return description
+
+
 class VersionForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Version
         fields = ["product", "version_number", "version_name", "version_is_valid"]
 
     def clean(self):
-        # Почему-то не работает
 
         cleaned_data = super().clean()
         product = cleaned_data.get("product")
@@ -80,9 +95,9 @@ class VersionForm(StyleFormMixin, ModelForm):
         if product and version_is_valid is not None:
             if version_is_valid:
                 if (
-                    Version.objects.filter(product=product, version_is_valid=True)
-                    .exclude(id=self.instance.id)
-                    .exists()
+                        Version.objects.filter(product=product, version_is_valid=True)
+                                .exclude(id=self.instance.id)
+                                .exists()
                 ):
                     raise ValidationError(
                         "В один момент может быть только одна активная версия продукта."

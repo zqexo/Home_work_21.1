@@ -47,7 +47,7 @@ class Product(models.Model):
     views_counter = models.PositiveIntegerField(
         default=0, verbose_name="Количество просмотров"
     )
-    is_active = models.BooleanField(default=True, verbose_name="В наличии")
+    is_published = models.BooleanField(default=False, verbose_name="Публикация продукта")
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -60,6 +60,11 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ("name",)
+        permissions = [
+            ("can_edit_published", "can edit published"),
+            ("can_edit_description", "can edit description"),
+            ("can_edit_category", "can edit category"),
+        ]
 
     def get_active_version(self):
         return self.versions.filter(version_is_valid=True).first()
@@ -92,6 +97,9 @@ class BlogPost(models.Model):
         verbose_name = "Публикация"
         verbose_name_plural = "Публикации"
         ordering = ("title",)
+        permissions = [
+            ("blogpost_crud", "can use crud on blogpost"),
+        ]
 
 
 class Version(models.Model):

@@ -5,7 +5,7 @@
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             {% if user.is_authenticated %}
-                {% if perms.catalog.add_blogpost %}
+                {% if perms.catalog.add_blogpost or perms.catalog.blogpost_crud %}
                     <a class="btn btn-outline-primary btn-circle-add d-flex justify-content-center align-items-center"
                        href="{% url 'catalog:blogpost_create' %}"
                        role="button">
@@ -28,7 +28,7 @@
                                        role="button" title="Инфо">
                                         <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
                                     </a>
-                                    {% if perms.catalog.update_blogpost %}
+                                    {% if perms.catalog.update_blogpost or perms.catalog.blogpost_crud %}
                                         <a class="btn btn-outline-secondary btn-circle"
                                            href="{% url 'catalog:blogpost_update' post.pk %}"
                                            role="button" title="Изменить">
@@ -36,7 +36,7 @@
                                                  class="btn-icon">
                                         </a>
                                     {% endif %}
-                                    {% if perms.catalog.delete_blogpost %}
+                                    {% if perms.catalog.delete_blogpost or perms.catalog.blogpost_crud %}
                                         <a class="btn btn-outline-secondary btn-circle"
                                            href="{% url 'catalog:blogpost_delete' post.pk %}"
                                            role="button" title="Удалить">

@@ -12,6 +12,7 @@ class Command(BaseCommand):
             last_name="Администраторов",
             is_staff=True,
             is_superuser=True,
+            is_active=True,
         )
 
         user.set_password("123")

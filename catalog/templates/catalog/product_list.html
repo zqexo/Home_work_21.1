@@ -17,6 +17,7 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
                 {% for product in object_list %}
+                    {% if product.is_published %}
                     <div class="col">
                         <div class="card shadow-sm product-card">
                             <img src="{{ product.image_previews | media_filter }}" alt="">
@@ -29,8 +30,7 @@
                                            role="button" title="Инфо">
                                             <img src="{% static 'crud_icons/info.png' %}" alt="Инфо" class="btn-icon">
                                         </a>
-                                        {% if user.is_authenticated %}
-                                            {% if perms.catalog.update_product %}
+                                            {% if perms.catalog.update_product or perms.catalog.can_edit_published and perms.catalog.can_edit_description or user == product.owner %}
 
                                                 <a class="btn btn-outline-secondary btn-circle"
                                                    href="{% url 'catalog:edit' product.pk %}"
@@ -39,7 +39,7 @@
                                                          class="btn-icon">
                                                 </a>
                                             {% endif %}
-                                            {% if perms.catalog.delete_product %}
+                                            {% if perms.catalog.delete_product or user == product.owner %}
                                                 <a class="btn btn-outline-secondary btn-circle btn-delete"
                                                    href="{% url 'catalog:delete' product.pk %}"
                                                    role="button" title="Удалить">
@@ -47,7 +47,6 @@
                                                          class="btn-icon default">
                                                 </a>
                                             {% endif %}
-                                        {% endif %}
                                     </div>
                                     {% if product.get_active_version.version_name %}
                                         <small class="version-info">Актуальная
@@ -62,6 +61,7 @@
                                    style="color: gray;"> Последнее обновление: {{ product.updated_at }}</small>
                         </div>
                     </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

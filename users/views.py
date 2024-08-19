@@ -24,7 +24,7 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        user.is_active = False
+        user.is_published = False
         token = secrets.token_hex(16)
         host = self.request.get_host()
         user.token = token
